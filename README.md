@@ -25,5 +25,13 @@
 ## 🚀 Como executar
 
 1. Clone este repositório:
-   ```bash
+```bash
    git clone https://github.com/andrwik/safequest.git
+```
+
+ 3. Abra a pasta do projeto:
+```bash
+ cd safequest
+```
+
+3. Abra o arquivo home.html em seu navegador
