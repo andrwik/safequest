@@ -20,18 +20,5 @@
 - HTML5  
 - CSS3 (com responsividade)  
 - JavaScript  
-- Font Awesome  
+- Font Awesome
 
-## 🚀 Como executar
-
-1. Clone este repositório:
-```bash
-   git clone https://github.com/andrwik/safequest.git
-```
-
- 3. Abra a pasta do projeto:
-```bash
- cd safequest
-```
-
-3. Abra o arquivo home.html em seu navegador
