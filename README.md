@@ -13,12 +13,11 @@
 - 🎮 **Jogos interativos** como o *CyberCross* e *Quiz de Segurança*  
 - 📘 **Cartilha digital** com dicas e orientações sobre navegação segura  
 - 👥 **Página institucional** com informações sobre o projeto  
-- 📱 **Layout responsivo** para dispositivos móveis e desktops  
 
 ## 🛠️ Tecnologias utilizadas
 
 - HTML5  
-- CSS3 (com responsividade)  
+- CSS3
 - JavaScript  
 - Font Awesome
 
