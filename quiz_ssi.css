@@ -1,0 +1,185 @@
+@import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap");
+
+body {
+  font-family: "Gabarito", sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('imagens/fundo_papel.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Contêiner principal */
+.container {
+    background-color: #ff6b6b;
+    padding: 30px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease-in-out;
+}
+
+.container:hover {
+    transform: scale(1.02);
+}
+
+/* Estilo para os títulos */
+h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #f8f8f8;
+}
+
+/* Estilo para os rótulos */
+label {
+    font-size: 18px;
+    color: #f0f0f0;
+    display: block;
+    margin: 15px 0 5px;
+}
+
+/* Estilo para os inputs e selects */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #000000;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #af4edb;
+    box-shadow: 0 0 8px rgba(175, 78, 219, 0.7);
+}
+
+/* Estilo dos botões */
+button {
+    background: #af4edb;
+    color: white;
+    padding: 15px;
+    width: 100%;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(53, 3, 77, 0.438);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #741f9b, #5e278b );
+    box-shadow: 0 6px 15px rgba(163, 89, 212, 0.5);
+}
+
+/* Ajuste para centralizar os botões */
+.container button {
+    display: block;
+    margin: 15px auto;
+    width: calc(100% - 30px);
+    text-align: center;
+}
+
+/* Ajuste para o contêiner de respostas */
+.answers-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+    max-width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+/* Estilo para os botões das respostas */
+.answers-container button {
+    background:  #ececec;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    /*background-color: #000000;*/
+    color: rgb(2, 1, 1);
+    width: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(42, 34, 34, 0.2);
+}
+
+
+
+.answers-container button:hover {
+    background-color: #c7e3fd;
+    color: rgb(6, 4, 4);
+    transform: scale(1.05);
+}
+
+/* Estilo para a barra de progresso */
+#progress-text {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #fff;
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 600px) {
+    .answers-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilo para a área de perguntas */
+#quiz-screen {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Estilo para o texto da pergunta */
+#question-text {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Esconder elementos com a classe "hide" */
+.hide {
+    display: none;
+}
+
+/* Ajustes específicos para botões de "Correção" e "Próxima Pergunta" */
+#check-btn, #next-btn {
+    display: block;
+    margin-top: 20px;
+}
+
+/* Efeito ao carregar a página */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.5s ease-in-out;
+}
+

@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap");
+
+body {
+  font-family: "Gabarito", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+}
+
+.section {
+  display: grid;
+  place-items: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: #473198;
+}
+
+.logo {
+  height: 80px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.game-container {
+  width: 68%;
+  margin: 45px auto;
+  background: white;
+  padding: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+}
+
+.game-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 0;
+  position: relative;
+}
+
+.game-section img {
+  width: 150px;
+  height: 100px;
+  background: #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.game-content {
+  flex: 1;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #007b8f;
+}
+
+.game-description {
+  font-size: 15.5px;
+  color: #333;
+  margin-top: 5px;
+  flex: 1;
+}
+
+.play-button {
+  background: #ff5c5c;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.divider {
+  height: 1px;
+  background: #ccc;
+  margin: 20px 0;
+}
+
+  .footer {
+    background: #009399;
+    color: #fff;
+    padding: 40px 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .footer-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .footer-column {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+  }
+
+  .footer-logo {
+    width: 150px;
+    margin-bottom: 15px;
+  }
+
+  .social-icons a {
+    color: #fff;
+    font-size: 20px;
+    margin-right: 10px;
+    transition: 0.3s;
+  }
+
+  .social-icons a:hover {
+    color: #00aaff;
+  }
+
+  h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul li {
+    margin-bottom: 8px;
+  }
+
+  ul li a {
+    text-decoration: none;
+    color: #ccc;
+    transition: 0.3s;
+  }
+
+  ul li a:hover {
+    color: #00aaff;
+  }
+
+  .footer-container p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+
+  p i {
+    margin-right: 8px;
+  }

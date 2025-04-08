@@ -1,0 +1,212 @@
+@import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Gabarito", sans-serif;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+}
+
+.section {
+  display: grid;
+  place-items: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: #473198;
+}
+
+.logo {
+  height: 80px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+/* Estilização da seção */
+.sobre-nos {
+  text-align: center;
+  padding: 50px;
+}
+
+.titulo {
+  font-size: 24px;
+  color: #008b8b;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Container dos membros */
+.membros {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+/* Estilização dos membros */
+.membro {
+  text-align: center;
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.membro img {
+  width: 150px;
+  height: 100px;
+  border-radius: 20px;
+  display: block;
+  margin: auto;
+}
+
+/* Nome abaixo da foto */
+.membro .nome {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  display: block;
+}
+
+/* Classe que ativa a animação */
+.membro.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.divider hr {
+  flex: 2;
+  border: none;
+  border-top: 1px solid #009399;
+  margin: 35px;
+}
+
+.divider span {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: "Gabarito", sans-serif;
+  text-transform: uppercase;
+  color: #009399;
+}
+
+.intro {
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 75px 0;
+  background: #ffffff;
+}
+
+.intro-text {
+  justify-content: center;
+  color: #000;
+  text-align: justify;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.intro-text p {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.footer {
+  background: #009399;
+  color: #fff;
+  padding: 40px 0;
+  margin-top: 60px;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-column {
+  flex: 1;
+  min-width: 200px;
+  margin: 10px;
+}
+
+.footer-logo {
+  width: 150px;
+  margin-bottom: 15px;
+}
+
+.social-icons a {
+  color: #fff;
+  font-size: 20px;
+  margin-right: 10px;
+  transition: 0.3s;
+}
+
+.social-icons a:hover {
+  color: #00aaff;
+}
+
+h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 8px;
+}
+
+ul li a {
+  text-decoration: none;
+  color: #ccc;
+  transition: 0.3s;
+}
+
+ul li a:hover {
+  color: #00aaff;
+}
+
+.footer-column p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+p i {
+  margin-right: 8px;
+}

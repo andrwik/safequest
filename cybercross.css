@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap");
+
+body {
+    font-family: 'Gabarito', sans-serif;
+    background: url('imagens/fundo_papel.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin-top: 10px;
+}
+
+.btn-voltar, .timer {
+    background: #ff6b6b;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.timer {
+    background: pink;
+}
+
+.game-container {
+    text-align: center;
+    background: #00c4cc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 100px;
+}
+
+.game-box {
+    background: #f0f8ff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.word-hints {
+    background: #f0f8ff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.word-box {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.word-box div {
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: white;
+    margin: 5px;
+}
+
+.keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.keyboard button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 5px;
+    background: #9b51e0;
+    color: white;
+    cursor: pointer;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.btn-action {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background: #7614a3;
+    color: white;
+}

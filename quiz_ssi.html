@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="quiz_ssi.css">
+  <title>Quiz SSI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #9b51e0;
+      color: white;
+    }
+
+    .correct {
+      border: 3px solid green !important;
+      color: white;
+    }
+
+    .wrong {
+      border: 3px solid red !important;
+      color: white;
+    }
+
+    .correct {
+      background-color: rgba(209, 252, 209, 0.966) !important;
+      color: white;
+    }
+
+    .wrong {
+      background-color: rgba(247, 221, 221, 0.973) !important;
+      color: white;
+    }
+
+    .selected {
+      background-color: rgb(87, 202, 244);
+    }
+
+    .answers-container button.selected {
+      background-color: rgb(13, 171, 219);
+    }
+  </style>
+
+
+
+</head>
+
+<body>
+
+  <div id="start-screen">
+    <div class="container">
+      <h2>Bem-vindo ao Quiz!</h2>
+      <label>Quantas questões deseja responder? (Máx: 30)</label>
+      <input type="number" id="questionCount" min="1" max="30" value="3">
+
+      <label>Escolha o nível de dificuldade:</label>
+      <select id="difficulty">
+        <option value="facil">Fácil</option>
+        <option value="medio">Médio</option>
+        <option value="dificil">Difícil</option>
+      </select>
+
+      <button onclick="startQuiz()">Começar Quiz</button>
+    </div>
+  </div>
+
+  <div id="quiz-screen" class="hide">
+    <div class="container">
+
+      <h2 id="question-text"></h2>
+      <p id="progress-text"></p>
+      <div id="answers" class="answers-container"></div>
+      <button id="check-btn" onclick="checkAnswer()">Correção</button>
+      <button id="next-btn" class="hide" onclick="nextQuestion()">Próxima Pergunta</button>
+    </div>
+  </div>
+
+  <div id="result-screen" class="hide">
+    <div class="container">
+      <h2>Quiz Finalizado!</h2>
+      <p id="score-text"></p>
+      <button onclick="location.reload()">Reiniciar Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = {
+      facil: [
+        { question: "O que é um phishing?", answers: ["Um golpe para roubar dados pessoais por e-mail ou sites falsos.", "Um tipo de vírus de computador.", "Um sistema de proteção contra ataques virtuais.", "Um software de atualização automática."], correct: 0 },
+
+        { question: "Qual é a principal característica de uma senha segura?", answers: ["Ser curta e fácil de lembrar.", "Ter números, letras maiúsculas, minúsculas e símbolos.", "Ser composta apenas por números.", "Ser igual ao nome do usuário."], correct: 1 },
+
+        { question: "O que um antivírus faz?", answers: ["Protege contra ataques de phishing.", "Detecta e remove códigos maliciosos.", "Evita ataques de engenharia social.", "Garante privacidade na Internet."], correct: 1 },
+
+        { question: "O que significa HTTPS em um site?", answers: ["Que o site tem anúncios pagos.", "Que a conexão é segura.", "Que o site é lento.", "Que o site não pode ser acessado."], correct: 1 },
+
+        { question: "O que são cookies?", answers: ["Pequenos arquivos que armazenam informações sobre a navegação.", "Um tipo de vírus.", "Mensagens de erro da Internet.", "Programas de segurança."], correct: 0 },
+
+        { question: "O que é um malware?", answers: ["Um programa malicioso que pode infectar seu dispositivo.", "Um software de segurança para bloquear vírus.", "Um serviço de backup na nuvem.", "Um tipo de firewall avançado."], correct: 0 },
+
+        { question: "Qual destas senhas é considerada mais segura?", answers: ["123456", "Senha123", "X@9z!t&P", "NomeDoUsuário"], correct: 2 },
+
+        { question: "O que um firewall faz?", answers: ["Bloqueia acessos não autorizados ao computador.", "Acelera a conexão com a Internet.", "Remove vírus automaticamente.", "Criptografa arquivos do usuário."], correct: 0 },
+
+        { question: "Qual é um risco de compartilhar muitas informações pessoais nas redes sociais?", answers: ["Facilitar ataques de engenharia social.", "Melhorar a conexão da Internet.", "Aumentar a segurança do computador.", "Reduzir o risco de golpes."], correct: 0 },
+
+        { question: "Como saber se um e-mail pode ser um golpe de phishing?", answers: ["Contém erros de português e pede informações pessoais.", "Sempre tem um anexo importante.", "Vem de um endereço desconhecido, mas confiável.", "É enviado pelo seu banco e pede para atualizar seus dados."], correct: 0 },
+
+        { question: "O que significa um cadeado ao lado da barra de endereços do navegador?", answers: ["O site utiliza uma conexão segura.", "O site tem um firewall.", "O site possui anúncios seguros.", "O site nunca pode ser invadido."], correct: 0 },
+
+        { question: "O que deve ser feito antes de instalar um aplicativo novo no celular?", answers: ["Verificar as permissões e a procedência do app.", "Instalar qualquer app sem preocupações.", "Conectar o celular a um computador para testar.", "Ignorar todas as permissões do aplicativo."], correct: 0 },
+
+        { question: "Por que é importante atualizar os programas do computador?", answers: ["Para corrigir falhas de segurança.", "Para deixar o computador mais pesado.", "Para remover arquivos temporários.", "Para bloquear cookies do navegador."], correct: 0 },
+
+        { question: "Qual destas atitudes ajuda a evitar vírus no computador?", answers: ["Abrir todos os e-mails recebidos.", "Baixar programas apenas de sites oficiais.", "Compartilhar senhas com amigos.", "Desativar o antivírus."], correct: 1 },
+
+        { question: "O que é um golpe de engenharia social?", answers: ["Técnica usada para enganar pessoas e obter informações confidenciais.", "Ataque que rouba arquivos pessoais do computador.", "Golpe financeiro envolvendo cartões de crédito.", "Um método seguro de comunicação online."], correct: 0 },
+
+        { question: "O que é um spyware?", answers: ["Programa que coleta informações do usuário sem permissão.", "Um tipo de antivírus gratuito.", "Um software de bloqueio de anúncios.", "Um serviço de segurança para Wi-Fi."], correct: 0 },
+
+        { question: "Qual é um sinal de que um site pode ser falso?", answers: ["URL estranha e sem HTTPS.", "Contém muitas imagens bonitas.", "Tem um chat de atendimento 24 horas.", "Não pede nenhuma senha."], correct: 0 },
+
+        { question: "Como se proteger ao usar redes Wi-Fi públicas?", answers: ["Usar uma VPN e evitar acessar sites sensíveis.", "Conectar-se sem preocupações, pois são seguras.", "Fazer login no banco e redes sociais normalmente.", "Baixar arquivos grandes para testar a velocidade."], correct: 0 },
+
+        { question: "Qual a melhor forma de criar uma senha segura?", answers: ["Misturar letras, números e símbolos aleatórios.", "Usar a mesma senha para tudo.", "Escolher algo fácil de lembrar, como data de nascimento.", "Usar uma palavra comum do dicionário."], correct: 0 },
+
+        { question: "O que fazer ao receber um e-mail suspeito de um banco?", answers: ["Não clicar em links e verificar diretamente no site oficial.", "Responder o e-mail com seus dados para confirmar.", "Ligar para o telefone que está no e-mail.", "Repassar para amigos para verificar se é verdadeiro."], correct: 0 },
+
+        { question: "O que significa autenticação em dois fatores?", answers: ["Um método que adiciona uma camada extra de segurança ao login.", "Criar duas senhas para cada conta.", "Um sistema que envia e-mails seguros.", "Um firewall contra ataques de hackers."], correct: 0 },
+
+        { question: "Qual é o perigo de baixar arquivos de sites desconhecidos?", answers: ["Possibilidade de instalar vírus no computador.", "Melhorar a segurança da rede Wi-Fi.", "Aumentar a velocidade de processamento.", "Obter atualizações de segurança gratuitas."], correct: 0 },
+
+        { question: "Como evitar ataques de ransomware?", answers: ["Fazer backup regularmente e evitar abrir anexos suspeitos.", "Instalar qualquer programa encontrado na Internet.", "Manter o antivírus desativado.", "Compartilhar arquivos com qualquer pessoa."], correct: 0 },
+
+        { question: "O que são ataques de negação de serviço (DDoS)?", answers: ["Tentativas de sobrecarregar servidores para torná-los indisponíveis.", "Ataques que roubam arquivos de e-mails.", "Golpes financeiros na Internet.", "Um sistema que protege contra malwares."], correct: 0 },
+
+        { question: "O que é um cavalo de Troia (Trojan)?", answers: ["Um programa malicioso disfarçado de software legítimo.", "Um antivírus de última geração.", "Uma senha super segura.", "Um novo protocolo de segurança da Internet."], correct: 0 }
+
+      ],
+      medio: [
+        { question: "Qual é um dos principais riscos ao utilizar a internet sem cuidados adequados?", answers: ["Aumento de produtividade nas tarefas diárias", "Exposição ao roubo de identidade", "Acesso mais rápido a informações", "Redução do uso de dados"], correct: 1 },
+
+        {
+          question: "De acordo com a cartilha, qual é a principal medida para garantir a segurança ao acessar a internet?",
+          answers: ["Aumentar a velocidade de navegação", "Usar a internet de forma consciente e cuidadosa", "Navegar sem restrições para ter uma experiência mais livre", "Desativar o antivírus para otimizar o desempenho"],
+          correct: 1
+        },
+        {
+          question: "Quais são as possíveis consequências do uso excessivo da internet, de acordo com a cartilha?",
+          answers: ["Melhora da qualidade de vida social e profissional", "Prejuízos à vida social e profissional", "Aumento da eficiência no trabalho", "Maior controle sobre as finanças pessoais"],
+          correct: 1
+        },
+        {
+          question: "O que é phishing?",
+          answers: ["Roubo de informações pessoais por meio de e-mails e sites falsos", "Ataque que visa bloquear a conexão de internet de uma pessoa", "Técnica para recuperar senhas esquecidas", "Estratégia para aumentar a velocidade de navegação"],
+          correct: 0
+        },
+        {
+          question: "Qual a recomendação principal para se proteger contra golpes de phishing?",
+          answers: ["Clicar em links em e-mails confiáveis", "Confirmar sempre a autenticidade dos sites e links antes de clicar", "Deixar o navegador fazer a verificação de segurança automaticamente", "Compartilhar suas informações com amigos para confirmar a autenticidade"],
+          correct: 1
+        },
+        {
+          question: "O que caracteriza uma fraude de antecipação de recursos?",
+          answers: ["Um tipo de desconto oferecido por lojas online confiáveis", "Promessa de prêmios ou vantagens mediante pagamento adiantado", "Oferecimento de promoções em produtos reais", "Oferta de prêmios após um sorteio online"],
+          correct: 1
+        },
+        {
+          question: "O que é fundamental fazer antes de comprar em um site de comércio eletrônico?",
+          answers: ["Não pesquisar sobre a loja e confiar apenas no preço", "Pesquisar a reputação da loja e verificar se a conexão é segura", "Confirmar o preço com outras lojas e comprar sem mais verificações", "Comprar rapidamente para garantir os melhores preços"],
+          correct: 1
+        },
+        {
+          question: "O que deve ser verificado para saber se um site é seguro para compras online?",
+          answers: ["Se o site oferece um grande número de produtos", "Se o site possui um certificado de segurança (HTTPS)", "Se o site tem promoções frequentes", "Se o site oferece descontos em todas as compras"],
+          correct: 1
+        },
+        {
+          question: "Qual é uma das principais ameaças que um malware pode causar aos dispositivos?",
+          answers: ["Melhorar o desempenho do sistema", "Comprometer dispositivos e roubar informações", "Acelerar a navegação na internet", "Proteger contra ataques de hackers"],
+          correct: 1
+        },
+        {
+          question: "O que pode prevenir infecções por malwares?",
+          answers: ["Manter o antivírus atualizado e evitar downloads de fontes desconhecidas", "Instalar muitos aplicativos para monitorar o sistema", "Desativar o antivírus e confiar em seu instinto", "Usar apenas a navegação anônima"],
+          correct: 0
+        },
+        {
+          question: "O que são ataques de força bruta na internet?",
+          answers: ["Tentativas de descobrir senhas por tentativa e erro", "Interceptação de tráfego de dados", "Ataques que instalam malwares em dispositivos", "Roubos de identidade através de phishing"],
+          correct: 0
+        },
+        {
+          question: "O que é essencial para proteger suas senhas na internet?",
+          answers: ["Usar senhas fortes e diferentes para cada serviço", "Usar a mesma senha em todos os sites para facilitar o acesso", "Compartilhar a senha apenas com amigos", "Não usar senhas para facilitar o login"],
+          correct: 0
+        },
+        {
+          question: "Como proteger a sua rede Wi-Fi?",
+          answers: ["Usando senhas robustas e evitando redes públicas sem proteção", "Deixando a senha da rede em locais visíveis", "Permitindo que todos os dispositivos se conectem facilmente", "Desativando a criptografia de dados"],
+          correct: 0
+        },
+        {
+          question: "Qual é o risco de usar redes Wi-Fi públicas sem proteção?",
+          answers: ["Melhora na velocidade da internet", "Roubo de dados pessoais e profissionais", "Menor uso de dados móveis", "Aumento da produtividade nas tarefas online"],
+          correct: 1
+        },
+        {
+          question: "Quais aplicativos devem ser instalados em dispositivos móveis para maior segurança?",
+          answers: ["Aplicativos de fontes desconhecidas", "Apenas aplicativos de lojas oficiais", "Aplicativos de fontes externas, mesmo sem avaliação", "Apenas aplicativos gratuitos de fontes confiáveis"],
+          correct: 1
+        },
+        {
+          question: "Como proteger dados armazenados em dispositivos móveis?",
+          answers: ["Não usar senhas ou bloqueios de tela", "Ativar bloqueios de tela e, sempre que possível, usar criptografia", "Evitar atualizar os dispositivos para não perder dados", "Deixar os dados acessíveis para facilitar o uso"],
+          correct: 1
+        },
+        {
+          question: "O que é recomendado ao compartilhar informações nas redes sociais?",
+          answers: ["Expor todos os dados pessoais publicamente", "Controlar quem pode visualizar suas publicações", "Compartilhar senhas e números bancários publicamente", "Manter as configurações padrão de privacidade"],
+          correct: 1
+        },
+        {
+          question: "Qual a importância de ter uma postura preventiva na internet?",
+          answers: ["Para aumentar a quantidade de dados coletados sobre você", "Para evitar riscos e garantir uma navegação mais segura", "Para navegar sem limitações em qualquer site", "Para acessar conteúdos restritos e bloquear ameaças"],
+          correct: 1
+        },
+        {
+          question: "Qual é a principal recomendação para realizar backups de dados importantes?",
+          answers: ["Fazer backups apenas quando a memória estiver cheia", "Fazer backups regulares para garantir a proteção de informações importantes", "Evitar realizar backups por questões de segurança", "Não realizar backups para economizar espaço"],
+          correct: 1
+        },
+        {
+          question: "O que você deve fazer ao receber um e-mail suspeito?",
+          answers: ["Responder pedindo mais informações", "Clicar nos links para verificar a autenticidade", "Ignorar e deletar o e-mail sem abrir os links ou anexos", "Compartilhar o e-mail com amigos"],
+          correct: 2
+        },
+        {
+          question: "O que são 'trojans' no contexto de segurança na internet?",
+          answers: ["Vírus que protegem dados e impedem acessos indesejados", "Programas que se disfarçam de aplicativos legítimos para causar danos", "Ferramentas de otimização de desempenho de dispositivos", "Senhas que se protegem automaticamente contra roubos"],
+          correct: 1
+        },
+        {
+          question: "Como você pode se proteger contra malwares?",
+          answers: ["Desativando o antivírus e outros softwares de proteção", "Mantendo o antivírus atualizado e evitando fontes desconhecidas", "Instalar qualquer aplicativo sem verificar a origem", "Usando apenas dispositivos móveis sem proteção"],
+          correct: 1
+        },
+        {
+          question: "O que caracteriza a 'interceptação de tráfego' na internet?",
+          answers: ["Tentativa de acessar senhas usando técnicas de criptografia", "Roubo de dados transmitidos pela rede de forma clandestina", "Instalação de antivírus para proteger dados", "Bloqueio de acessos a sites não seguros"],
+          correct: 1
+        },
+        {
+          question: "Quais são os cuidados que você deve ter com suas informações nas redes sociais?",
+          answers: ["Não compartilhar nenhuma informação pessoal com ninguém", "Deixar todas as publicações públicas e sem restrição", "Compartilhar senhas e números bancários publicamente", "Expor dados privados sem verificar a visibilidade da postagem"],
+          correct: 0
+        },
+        {
+          question: "Por que é importante usar senhas diferentes para cada serviço online?",
+          answers: ["Para facilitar o acesso a todos os sites", "Para evitar o risco de comprometer várias contas com a mesma senha", "Para garantir que você sempre use senhas fáceis", "Para melhorar o desempenho da internet"],
+          correct: 1
+        },
+        {
+          question: "Como você pode se proteger de ataques de força bruta?",
+          answers: ["Usando senhas simples e curtas", "Usando senhas fortes e trocando-as regularmente", "Compartilhando senhas com amigos de confiança", "Não utilizando senhas para serviços online"],
+          correct: 1
+        },
+        {
+          question: "O que deve ser evitado ao acessar informações bancárias pela internet?",
+          answers: ["Utilizar senhas fortes e verificar a URL do site", "Usar conexões Wi-Fi públicas sem segurança", "Manter o antivírus desatualizado", "Manter o sistema operacional atualizado"],
+          correct: 1
+        },
+        {
+          question: "O que caracteriza um site com 'https' no endereço?",
+          answers: ["Um site que oferece descontos em compras", "Um site que utiliza criptografia para proteger dados", "Um site que é sempre rápido e seguro", "Um site que coleta dados para fins publicitários"],
+          correct: 1
+        },
+        {
+          question: "O que é recomendado ao navegar em sites desconhecidos?",
+          answers: ["Clicar em todos os links para explorar o conteúdo", "Verificar se o site é confiável e se usa uma conexão segura", "Baixar todos os arquivos disponíveis", "Deixar as configurações de segurança do navegador desativadas"],
+          correct: 1
+        },
+
+        {
+          question: "O que é 'spoofing' na internet?",
+          answers: ["Uma técnica para aumentar a velocidade de sites", "Uma técnica para enganar sistemas e roubar informações", "Uma técnica para melhorar a segurança de dispositivos", "Uma técnica para aumentar a visibilidade em redes sociais"],
+          correct: 1
+        }
+
+
+      ],
+      dificil: [
+        {
+          question: "Qual é a técnica utilizada para enganar usuários e obter informações confidenciais através da manipulação psicológica?",
+          answers: ["Cryptojacking", "Engenharia social", "Keylogging", "Spoofing"],
+          correct: 1
+        },
+        {
+          question: "Qual dos seguintes ataques visa modificar o tráfego de rede para redirecionar um usuário a um site falso?",
+          answers: ["Man-in-the-Middle", "Sniffing", "Pharming", "Cross-site scripting"],
+          correct: 2
+        },
+        {
+          question: "Para evitar ataques de força bruta, é essencial:",
+          answers: ["Utilizar senhas curtas e fáceis de lembrar", "Alterar a senha toda semana", "Usar autenticação de dois fatores e senhas fortes", "Anotar a senha e guardá-la em um papel"],
+          correct: 2
+        },
+        {
+          question: "O que diferencia um ransomware de um vírus comum?",
+          answers: ["Ele se espalha automaticamente pela rede", "Ele bloqueia o acesso a arquivos e exige pagamento de resgate", "Ele apenas rouba credenciais bancárias", "Ele infecta apenas servidores de grandes empresas"],
+          correct: 1
+        },
+        {
+          question: "Em relação à segurança do Wi-Fi doméstico, qual das práticas abaixo é a mais segura?",
+          answers: ["Utilizar criptografia WPA3 e desativar o WPS", "Manter a senha padrão do roteador", "Permitir conexões automáticas sem senha", "Utilizar redes abertas para maior acessibilidade"],
+          correct: 0
+        },
+        {
+          question: "O que caracteriza um ataque de negação de serviço (DDoS)?",
+          answers: ["Interceptação de tráfego de rede", "Envio massivo de pacotes para sobrecarregar um sistema", "Tentativa de adivinhar credenciais por força bruta", "Instalação de spyware sem o conhecimento do usuário"],
+          correct: 1
+        },
+        {
+          question: "Qual dos itens abaixo NÃO é um tipo de malware?",
+          answers: ["Keylogger", "Trojan", "Packet Sniffer", "Worm"],
+          correct: 2
+        },
+        {
+          question: "Qual das opções abaixo representa uma estratégia eficaz para evitar ataques de interceptação de tráfego (Man-in-the-Middle)?",
+          answers: ["Utilizar redes Wi-Fi abertas com senhas fracas", "Usar VPNs e conexões criptografadas sempre que possível", "Desativar o firewall para melhorar a velocidade da rede", "Permitir conexões automáticas com dispositivos desconhecidos"],
+          correct: 1
+        },
+        {
+          question: "O que diferencia um spyware de um adware?",
+          answers: ["O spyware monitora o usuário sem consentimento, enquanto o adware exibe anúncios indesejados", "O spyware causa danos físicos ao computador, enquanto o adware não", "O adware é sempre malicioso, enquanto o spyware não", "O spyware não coleta informações pessoais, enquanto o adware sim"],
+          correct: 0
+        },
+        {
+          question: "Como um ataque de injeção SQL pode comprometer um banco de dados?",
+          answers: ["Permite que um invasor insira comandos SQL maliciosos para manipular ou roubar informações", "Bloqueia o acesso do usuário ao site por meio de um ataque de negação de serviço", "Criptografa os dados do usuário e exige resgate para liberação", "Apenas altera a formatação do banco de dados sem comprometer informações"],
+          correct: 0
+        },
+        {
+          question: "Qual dos itens abaixo representa uma técnica de ataque onde um invasor se faz passar por uma pessoa ou empresa confiável para obter dados sigilosos?",
+          answers: ["Cross-site scripting (XSS)", "DNS spoofing", "Phishing", "DDoS"],
+          correct: 2
+        },
+        {
+          question: "Como um ataque de brute force é normalmente realizado?",
+          answers: ["Tentando várias combinações de senha automaticamente até encontrar a correta", "Infectando um dispositivo com um trojan", "Redirecionando o tráfego da vítima para um site malicioso", "Criando um e-mail falso para enganar a vítima"],
+          correct: 0
+        },
+        {
+          question: "Qual é a forma mais segura de armazenar senhas?",
+          answers: ["Memorizar todas as senhas sem anotá-las", "Usar um gerenciador de senhas confiável com criptografia", "Escrever senhas em um bloco de notas digital", "Criar uma senha única e utilizá-la em todos os serviços"],
+          correct: 1
+        },
+        {
+          question: "O que um atacante pode fazer ao explorar uma vulnerabilidade de um sistema desatualizado?",
+          answers: ["Apenas visualizar informações não sigilosas", "Ganhar acesso privilegiado e comprometer a segurança do sistema", "Melhorar a performance do sistema infectado", "Apenas alterar a interface visual do software afetado"],
+          correct: 1
+        },
+        {
+          question: "Como um usuário pode verificar a autenticidade de um site de e-commerce?",
+          answers: ["Verificando se o site utiliza HTTPS e se possui avaliações de usuários confiáveis", "Conferindo se o site apresenta muitos anúncios pop-up", "Se o site exige apenas um nome de usuário para login", "Comprando um produto pequeno primeiro para testar a confiabilidade"],
+          correct: 0
+        },
+        {
+          question: "Como um ataque de ransomware pode ser mitigado?",
+          answers: ["Mantendo backups regulares e atualizando o sistema operacional", "Ignorando e-mails suspeitos, mas não atualizando o antivírus", "Usando redes Wi-Fi públicas sem VPN", "Apenas reiniciando o computador após a infecção"],
+          correct: 0
+        },
+        {
+          question: "Qual é o principal objetivo de um ataque de DNS spoofing?",
+          answers: ["Redirecionar o tráfego do usuário para um site falso", "Infectar um computador com um vírus", "Interromper a comunicação entre dispositivos na mesma rede", "Bloquear completamente o acesso à internet da vítima"],
+          correct: 0
+        },
+        {
+          question: "Qual a principal diferença entre um trojan e um worm?",
+          answers: ["Um trojan precisa ser executado pelo usuário, enquanto um worm se espalha automaticamente", "Worms são inofensivos, enquanto trojans são sempre maliciosos", "Trojans atacam redes, enquanto worms atacam apenas computadores individuais", "Worms não podem se replicar, enquanto trojans podem"],
+          correct: 0
+        },
+        {
+          question: "O que pode indicar que um computador foi comprometido por um malware?",
+          answers: ["Lentidão repentina do sistema e comportamento anormal", "Melhoria no desempenho e aumento da velocidade da internet", "Redução na necessidade de atualização de software", "Aparecimento de novas funcionalidades úteis inesperadamente"],
+          correct: 0
+        },
+        {
+          question: "Como um usuário pode evitar ataques de keylogging?",
+          answers: ["Utilizando teclados virtuais e evitando downloads de fontes desconhecidas", "Desativando o firewall para evitar bloqueios de segurança", "Digitando senhas rapidamente para confundir o keylogger", "Permitindo que qualquer aplicativo tenha acesso ao teclado"],
+          correct: 0
+        },
+        {
+          question: "Qual é uma boa prática ao utilizar dispositivos móveis para aumentar a segurança?",
+          answers: ["Utilizar autenticação biométrica e criptografia de dados", "Desativar a senha para facilitar o acesso", "Baixar aplicativos de qualquer site na internet", "Conectar-se a redes Wi-Fi públicas sem verificar a segurança"],
+          correct: 0
+        },
+        {
+          question: "Qual é a melhor forma de se proteger contra ataques de engenharia social?",
+          answers: ["Nunca compartilhar informações pessoais com desconhecidos e verificar fontes antes de confiar em solicitações", "Confiar em chamadas de suporte técnico sem verificar a identidade do atendente", "Fornecer informações de login por telefone se solicitado", "Utilizar senhas fáceis de lembrar para agilizar processos de login"],
+          correct: 0
+        },
+        {
+          question: "O que o HTTPS garante em um site?",
+          answers: ["Que o site está livre de malwares", "Que o conteúdo do site foi verificado por uma autoridade governamental", "Que os dados transmitidos entre o usuário e o site estão criptografados", "Que o site está hospedado em um servidor seguro"],
+          correct: 2
+        },
+        {
+          question: "Qual técnica pode ser utilizada para detectar fraudes em e-mails de phishing?",
+          answers: ["Verificar o endereço do remetente e o domínio do link", "Clicar em todos os links para testar a segurança", "Responder o e-mail pedindo mais informações", "Baixar arquivos anexos antes de analisar a mensagem"],
+          correct: 0
+        },
+        {
+          question: "O que um keylogger faz?",
+          answers: ["Monitora a navegação do usuário para mostrar anúncios personalizados", "Registra as teclas digitadas no teclado para capturar credenciais", "Bloqueia o acesso a arquivos pessoais e exige resgate", "Atua como um firewall pessoal para impedir invasões"],
+          correct: 1
+        },
+        {
+          question: "Para que serve a autenticação multifator (MFA)?",
+          answers: ["Para aumentar a velocidade de login", "Para adicionar uma camada extra de segurança ao processo de autenticação", "Para garantir que senhas fracas possam ser reutilizadas", "Para evitar que sites sejam hackeados"],
+          correct: 1
+        },
+        {
+          question: "O que é um ataque 'zero-day'?",
+          answers: ["Um ataque que ocorre em redes sociais", "Um ataque baseado em uma vulnerabilidade desconhecida até então", "Um ataque que exige ação do usuário para ser executado", "Um ataque que só ocorre em dispositivos móveis"],
+          correct: 1
+        },
+        {
+          question: "Qual é um indício de que um e-mail pode ser um phishing?",
+          answers: ["Uso de linguagem formal e sem erros", "Pedidos urgentes de atualização de credenciais bancárias", "Links que levam diretamente ao site oficial da empresa", "Uso de e-mails corporativos verificados"],
+          correct: 1
+        },
+        {
+          question: "O que pode comprometer a privacidade de um usuário nas redes sociais?",
+          answers: ["Publicar informações pessoais publicamente sem restrições", "Usar senhas longas e complexas", "Ativar autenticação de dois fatores", "Não compartilhar nenhuma informação nas redes sociais"],
+          correct: 0
+        },
+        {
+          question: "Qual é um método eficaz para proteger contas contra ataques de força bruta?",
+          answers: ["Usar senhas curtas, mas fáceis de lembrar", "Utilizar um gerenciador de senhas para criar e armazenar senhas fortes", "Reutilizar senhas em múltiplos sites", "Deixar o login automático ativado"],
+          correct: 1
+        }
+
+      ]
+    };
+
+    let selectedQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let userChoice = -1;
+
+    function startQuiz() {
+      let count = parseInt(document.getElementById("questionCount").value);
+      let difficulty = document.getElementById("difficulty").value;
+      selectedQuestions = questions[difficulty].slice(0, count);
+      document.getElementById("start-screen").classList.add("hide");
+      document.getElementById("quiz-screen").classList.remove("hide");
+      showQuestion();
+    }
+
+
+
+
+    function showQuestion() {
+      let q = selectedQuestions[currentQuestionIndex];
+      document.getElementById("question-text").textContent = q.question;
+      let answersDiv = document.getElementById("answers");
+      answersDiv.innerHTML = "";
+      q.answers.forEach((ans, index) => {
+        let btn = document.createElement("button");
+        btn.textContent = ans;
+        btn.onclick = () => selectAnswer(btn, index);
+        answersDiv.appendChild(btn);
+      });
+      updateProgress();
+      document.getElementById("check-btn").classList.remove("hide");
+      document.getElementById("next-btn").classList.add("hide");
+    }
+
+    function selectAnswer(button, index) {
+      userChoice = index;
+      let buttons = document.getElementById("answers").children;
+      for (let btn of buttons) {
+        btn.classList.remove("selected");
+      }
+      button.classList.add("selected");
+    }
+
+    function checkAnswer() {
+      if (userChoice === -1) return alert("Selecione uma resposta primeiro!");//userChoice armazena a opção que o usuário escolheu. Se ele não escolheu nada (userChoice === -1), exibe um alerta dizendo para selecionar uma resposta.//
+
+      let q = selectedQuestions[currentQuestionIndex];
+      let answerButtons = document.getElementById("answers").children;
+      for (let i = 0; i < answerButtons.length; i++) {
+        if (i === q.correct) answerButtons[i].classList.add("correct");
+        else answerButtons[i].classList.add("wrong");
+      }
+      if (userChoice === q.correct) score++;
+      document.getElementById("check-btn").classList.add("hide");
+      document.getElementById("next-btn").classList.remove("hide");
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < selectedQuestions.length) {
+        userChoice = -1;
+        showQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById("quiz-screen").classList.add("hide");
+      document.getElementById("result-screen").classList.remove("hide");
+      document.getElementById("score-text").textContent = `Você acertou ${score} de ${selectedQuestions.length} questões!`;
+    }
+
+    function updateProgress() {
+      document.getElementById("progress-text").textContent = `Questão ${currentQuestionIndex + 1} de ${selectedQuestions.length}`;
+    }
+  </script>
+</body>
+
+</html>
